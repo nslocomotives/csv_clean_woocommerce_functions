@@ -9,4 +9,4 @@ install:
 script:
   - pytest
 env:
-  - LOGGING_LOCATION=textalert.log
+  - LOGGING_LOCATION=csvUpload.log
