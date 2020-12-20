@@ -1,8 +1,8 @@
 # Text Alert Google Cloud Function using Twilio API
 
-[![Build Status](https://travis-ci.org/nslocomotives/csv_clean_woocomerce_function.svg?branch=main)](https://travis-ci.org/nslocomotives/csv_clean_woocomerce_function)
-![GitHub](https://img.shields.io/github/license/nslocomotives/csv_clean_woocomerce_function)
-![code compliance workflow](https://github.com/nslocomotives/csv_clean_woocomerce_function/workflows/code%20compliance%20workflow/badge.svg?branch=main)
+[![Build Status](https://travis-ci.org/nslocomotives/csv_clean_woocommerce_functions.svg?branch=main)](https://travis-ci.org/nslocomotives/csv_clean_woocommerce_functionsn)
+![GitHub](https://img.shields.io/github/license/nslocomotives/csv_clean_woocommerce_functions)
+![code compliance workflow](https://github.com/nslocomotives/csv_clean_woocommerce_functions/workflows/code%20compliance%20workflow/badge.svg?branch=main)
 
 A [Google Cloud Function](https://cloud.google.com/functions/) that takes a csv from New Temptations and format it for import to [WooComerce](https://github.com/woocommerce/woocommerce/wiki/Product-CSV-Import-Schema#csv-columns-and-formatting).
 
