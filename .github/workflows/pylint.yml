@@ -1,0 +1,67 @@
+name: code compliance workflow
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    env:
+      LOGGING_LOCATION: textalert.log
+      GCP_PROJECT: 123456789
+      TWILIO_FROM: +15005550006
+      TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2.1.4
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pylint pytest coverage
+    - name: Analysing the code with pylint
+      run: |
+        set -o pipefail
+        pylint `ls|grep .py$|xargs` 2>&1 | tee report_lint.txt
+        set +o pipefail
+    - name: Running pytest
+      run: |
+        set -o pipefail
+        pytest 2>&1 | tee report_pytest.txt
+        set +o pipefail
+    - name: Running Coverage Reports
+      run: |
+        coverage run -m pytest
+        set -o pipefail
+        coverage report -m 2>&1 | tee report_coverage.txt
+        set +o pipefail
+        coverage html
+    - name: Running test Coverage Reports
+      run: |
+        coverage run -m pytest;coverage report -m; coverage html
+    - name: Build Artifacts for Arcives
+      uses: actions/upload-artifact@v2
+      with:
+        name: html-code-coverage-report
+        path: htmlcov/*
+    - name: Upload lint report for Arcives
+      uses: actions/upload-artifact@v2
+      with:
+        name: text-reports
+        path: report_lint.txt
+    - name: Upload Coverage report for Arcives
+      uses: actions/upload-artifact@v2
+      with:
+       name: text-reports
+       path: report_coverage.txt
+    - name: Upload pytest report for Arcives
+      uses: actions/upload-artifact@v2
+      with:
+        name: text-reports
+        path: report_pytest.txt
