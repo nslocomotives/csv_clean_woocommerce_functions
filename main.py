@@ -3,6 +3,7 @@
 import base64
 import ast
 import logging
+import pandas as pd
 import logging.handlers
 from decouple import config
 from google.cloud import secretmanager
@@ -42,4 +43,5 @@ def get_csv_data(payload):
     """Function to get a CSV and perform basic Validation"""
     result = {}
     result['error'] = False
+    result['data'] = pd.read_csv(payload['file_url'])
     return result
