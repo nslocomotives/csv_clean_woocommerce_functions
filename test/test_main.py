@@ -1,6 +1,8 @@
+"""Unit tests for the main script"""
+
 import base64
 from decouple import config
-from main import get_csv, unpack_data
+from main import get_csv_data, unpack_data
 
 # set static credentials variables
 temptations_image_bank_user     = config('TEMPTAIONS_IMG_BNK_USR')
@@ -12,7 +14,7 @@ wocommerce_ck                   = config('WOOCOMMERCE_CK')
 wocommerce_cs                   = config('WOOCOMMERCE_CS')
 
 def test_get_csv_data_success() -> None:
-    '''testing ability to collect csv file '''
+    """testing ability to collect csv file """
     payload = {}
     payload['file_url']         = 'https://github.com/nslocomotives/'
     payload['website_user']     = temptations_website_user
@@ -20,6 +22,7 @@ def test_get_csv_data_success() -> None:
 
     results = get_csv_data(payload)
     assert results['error'] is False
+    assert results['data'] is True
 
 def test_get_csv_data_filenotfound() -> None:
     '''testing file not found error'''
