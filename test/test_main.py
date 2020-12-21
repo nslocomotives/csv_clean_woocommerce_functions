@@ -16,7 +16,7 @@ wocommerce_cs                   = config('WOOCOMMERCE_CS')
 def test_get_csv_data_success() -> None:
     """testing ability to collect csv file """
     payload = {}
-    payload['file_url']         = 'https://github.com/nslocomotives/'
+    payload['file_url']         = 'https://github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testdata/new_temptaions_AWIS.csv'
     payload['website_user']     = temptations_website_user
     payload['website_password'] = temptations_website_password
 
