@@ -16,7 +16,7 @@ wocommerce_cs                   = config('WOOCOMMERCE_CS')
 def test_get_csv_data_success() -> None:
     """testing ability to collect csv file """
     payload = {}
-    payload['file_url']         = 'https://github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testdata/new_temptaions_AWIS.csv'
+    payload['file_url']         = 'https://github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testData/new_temptaions_AWIS.csv'
     payload['website_user']     = temptations_website_user
     payload['website_password'] = temptations_website_password
 
@@ -27,7 +27,7 @@ def test_get_csv_data_success() -> None:
 def test_get_csv_data_filenotfound() -> None:
     '''testing file not found error'''
     payload = {}
-    payload['file_url']         = 'https://github.com/nslocomotives/'
+    payload['file_url']         = 'https://github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testData/notfound.csv'
     payload['website_user']     = temptations_website_user
     payload['website_password'] = temptations_website_password
 
@@ -37,7 +37,7 @@ def test_get_csv_data_filenotfound() -> None:
 def test_get_csv_data_fileformaterror() -> None:
     '''testting file format of csv and correct handeling of error '''
     payload = {}
-    payload['file_url']         = 'https://github.com/nslocomotives/'
+    payload['file_url']         = 'https://github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testData/badformat.csv'
     payload['website_user']     = temptations_website_user
     payload['website_password'] = temptations_website_password
 
