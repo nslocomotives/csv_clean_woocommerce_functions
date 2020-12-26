@@ -16,33 +16,36 @@ wocommerce_cs                   = config('WOOCOMMERCE_CS')
 def test_get_csv_data_success() -> None:
     """testing ability to collect csv file """
     payload = {}
-    payload['file_url']         = 'https://github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testData/new_temptaions_AWIS.csv'
+    payload['file_url']         = 'https://raw.githubusercontent.com/nslocomotives/csv_clean_woocommerce_functions/master/test/testData/new_temptaions_AWIS.csv'
     payload['website_user']     = temptations_website_user
     payload['website_password'] = temptations_website_password
 
     results = get_csv_data(payload)
     assert results['error'] is False
-    assert results['data'] is True
+    assert results['data'].empty is False
 
 def test_get_csv_data_filenotfound() -> None:
     '''testing file not found error'''
     payload = {}
-    payload['file_url']         = 'https://github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testData/notfound.csv'
+    payload['file_url']         = 'https://raw.github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testData/notfound.csv'
     payload['website_user']     = temptations_website_user
     payload['website_password'] = temptations_website_password
 
     results = get_csv_data(payload)
-    assert results['error'] == "File Not Found."
+    print(results)
+    assert results['error'] == "Not Found"
+    assert results['error_code'] == 404
 
 def test_get_csv_data_fileformaterror() -> None:
     '''testting file format of csv and correct handeling of error '''
     payload = {}
-    payload['file_url']         = 'https://github.com/nslocomotives/csv_clean_woocommerce_functions/blob/master/test/testData/badformat.csv'
+    payload['file_url']         = 'https://raw.githubusercontent.com/nslocomotives/csv_clean_woocommerce_functions/master/test/testData/badformat.csv'
     payload['website_user']     = temptations_website_user
     payload['website_password'] = temptations_website_password
 
     results = get_csv_data(payload)
-    assert results['error'] == "File Format Error."
+    assert results['error'] == "No columns to parse from file"
+    assert results['error_code'] == 1001
 
 def test_unpack_data_with_encoded_data() -> None:
     '''testing unpacking base64 encoded data - expected use case'''

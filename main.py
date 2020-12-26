@@ -3,10 +3,13 @@
 import base64
 import ast
 import logging
+import csv
 import pandas as pd
 import logging.handlers
 from decouple import config
 from google.cloud import secretmanager
+from urllib.error import HTTPError
+from pandas.errors import EmptyDataError
 
 #setting up loggers
 logger = logging.getLogger('csvFucntions')
@@ -39,9 +42,23 @@ def unpack_data(data):
     result = ast.literal_eval(result)
     return result
 
+def catch_error_detail(e, attribute):
+    if hasattr(e, attribute) is True:
+        value = getattr(e, attribute)
+    else:
+        value = hasattr(e, attribute)
+    return value
+
 def get_csv_data(payload):
     """Function to get a CSV and perform basic Validation"""
     result = {}
     result['error'] = False
-    result['data'] = pd.read_csv(payload['file_url'])
+    try:
+        result['data'] = pd.read_csv(payload['file_url'], error_bad_lines=False)
+    except HTTPError as e:
+        result['error_code']    = catch_error_detail(e, 'code')
+        result['error']         = catch_error_detail(e, 'msg')
+    except (EmptyDataError):
+        result['error_code']    = 1001
+        result['error']         = 'No columns to parse from file'
     return result
