@@ -3,7 +3,9 @@
 import base64
 import ast
 import logging
+import hashlib
 import csv
+import requests
 import pandas as pd
 import logging.handlers
 from decouple import config
@@ -61,4 +63,33 @@ def get_csv_data(payload):
     except (EmptyDataError):
         result['error_code']    = 1001
         result['error']         = 'No columns to parse from file'
+    return result
+
+def check_file_updated(payload):
+    """Checks the csv is different"""
+    result = {}
+    result['error'] = False
+    result['file_changed'] = True
+    with open(payload['file_path'], 'rb') as fh:
+        md5hash = hashlib.md5()
+        while True:
+            data = fh.read(8192)
+            if not data:
+                break
+            md5hash.update(data)
+        result['file_hash'] = md5hash.hexdigest()
+    remote_file = requests.get(payload['remote_file_url'], stream=True)
+    md5hash = hashlib.md5()
+    for data in remote_file.iter_content(8192):
+        md5hash.update(data)
+        result['remote_file_hash'] = md5hash.hexdigest()
+
+    if result['file_hash'] == result['remote_file_hash']:
+        result['file_changed'] = False
+    else:
+        result['file_changed'] = True
+
+    print(result)
+
+
     return result

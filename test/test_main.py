@@ -2,7 +2,7 @@
 
 import base64
 from decouple import config
-from main import get_csv_data, unpack_data
+from main import get_csv_data, unpack_data, check_file_updated
 
 # set static credentials variables
 temptations_image_bank_user     = config('TEMPTAIONS_IMG_BNK_USR')
@@ -54,3 +54,12 @@ def test_unpack_data_with_encoded_data() -> None:
     unpacked_data = unpack_data(data)
     assert unpacked_data['file_name'] == message_data['file_name']
     assert unpacked_data['wholesaler'] == message_data['wholesaler']
+
+
+def test_check_file_updated() -> None:
+    """Test case for checking if file has change"""
+    payload = {}
+    payload['file_path']        = 'test\\testData\\new_temptaions_AWIS.csv'
+    payload['remote_file_url']  = 'https://raw.githubusercontent.com/nslocomotives/csv_clean_woocommerce_functions/master/test/testData/new_temptaions_AWIS.csv'
+    results=check_file_updated(payload)
+    assert results['file_changed'] is False
